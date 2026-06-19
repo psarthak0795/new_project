@@ -1,0 +1,45 @@
+.gitignore file
+ 
+ 
+# virtual environment
+.venv/
+venv/
+env/
+Env/
+ 
+#Python Cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# database
+pms.db
+*.db
+*.sqlite3
+
+#Environment variables
+.env
+.env*
+!.env.example
+
+#logs
+*.log
+logs/
+ 
+#IDE & editor folders
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# python bytecode
+*.pyc
+__pycache__/
+ 
+# DB migrations
+alembic/
+alembic.ini
+ 
+# app configurations (secret key, etc.)
+config.py
+ 
