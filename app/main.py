@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.routers import authh, login, manager, project, refresh, user
+from app.routers import authh, login, manager, project, refresh, user, webpage
 
 from app.database.connection import engine, Base
 
@@ -17,5 +17,5 @@ app.include_router(refresh.router)
 app.include_router(user.router)
 app.include_router(project.router)
 app.include_router(manager.router)
-
+app.include_router(webpage.router)
 

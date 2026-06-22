@@ -1,20 +1,19 @@
 from jose import JWTError, jwt
-from fastapi import Depends, HTTPException
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from fastapi import Depends, HTTPException, Request
+from fastapi.security import  HTTPBearer 
 from sqlalchemy.orm import Session
 
 from app.database.connection import get_db
 from app.database.models.user import User
 from app.core.security import (SECRET_KEY,ALGORITHM)
 
-security = HTTPBearer()
 
 def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(security),
+    request: Request,
     db: Session = Depends(get_db)):
     credentials_exception = HTTPException(status_code=401,
         detail="Could not validate credentials")
-    token = credentials.credentials
+    token = request.cookies.get("access_token")
     try:
         payload = jwt.decode(token,SECRET_KEY,algorithms=[ALGORITHM])
 

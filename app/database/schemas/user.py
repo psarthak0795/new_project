@@ -2,6 +2,7 @@ from datetime import date
 from enum import Enum
 from pydantic import BaseModel, EmailStr
 from typing import Optional
+from fastapi import Form
 
 
 class UserRole(str, Enum):
@@ -34,10 +35,55 @@ class UserBase(BaseModel):
     country: str
     dob: date
 
+@classmethod
+def as_form(
+    cls,
+    first_name:str = Form(...),
+   middle_name:str = Form(...),
+    last_name:str = Form(...),
+   email:str = Form(...),
+    phone:str = Form(...),
+    role:str = Form(...),
+     gender:str = Form(...),
+   designation:str = Form(...),
+    joining_date:str = Form(...),
+   address:str = Form(...),
+    zip_code:str = Form(...),
+    city:str = Form(...),
+     state:str = Form(...),
+      country:str = Form(...),
+       dob:str = Form(...)
+):
+    return cls(
+        first_name=first_name,
+        middle_name=middle_name,
+        last_name=last_name,
+        email=email,
+        phone=phone,
+        role=role,
+        gender=gender,
+        designation=designation,
+        joining_date=joining_date,
+        address=address,
+        zip_code=zip_code,
+        city=city,
+        state=state,
+        country=country,
+        dob=dob
+    )
 
 class UserCreate(UserBase):
     password: str
 
+    @classmethod
+    def as_form(
+        cls,
+        password:str = Form(...)
+    ):
+        
+        return cls(
+            password=password)
+        
 
 class UserResponse(UserBase):
     id: int

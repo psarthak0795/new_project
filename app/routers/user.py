@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends ,Request
 from sqlalchemy.orm import Session
 
 from app.database.connection import get_db
@@ -6,6 +6,9 @@ from app.dependencies.auth import get_current_user
 from app.database.models.user import User
 from app.database.schemas.user import UserResponse
 from app.services.user import UserService
+from fastapi.templating import Jinja2Templates
+
+templates = Jinja2Templates(directory="app/templates")
 
 router = APIRouter(prefix="/users",tags=["Users"])
 
@@ -21,13 +24,24 @@ def get_all_users(db: Session = Depends(get_db),current_user: User = Depends(get
 
 
 @router.get("/{user_id}", response_model=UserResponse)
-def get_user_by_id(
-    user_id: int,
+def get_user_by_id(request:Request,
     db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
-    return UserService.get_user_by_id(
+    
+    UserService.get_user_by_id(
         db=db,
-        user_id=user_id,
+        user_id=current_user.id,
         current_user=current_user)
+    
+    return templates.TemplateResponse(
+        request=request,
+        name="homepage.html",
+        context={
+            "request": request,
+            "user" : current_user,
+            "is_manager" : current_user.role.value == "manager"
+        }
+        
+    )
     
 @router.put("/{user_id}", response_model=UserResponse)
 def update_user(

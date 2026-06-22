@@ -27,5 +27,5 @@ def register_user_service(db: Session, payload):
     user_data["password"] = hash_password(payload.password)
 
     user = create_user(db, user_data)
-
+    print("user created")
     return {"message": "User created successfully","user_id": user.id}
