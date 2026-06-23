@@ -1,10 +1,10 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 
 class UserMini(BaseModel):
     id: int
     first_name: str
-    email: EmailStr
+    email: str
 
     class Config:
         from_attributes = True

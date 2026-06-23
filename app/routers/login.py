@@ -11,10 +11,10 @@ router = APIRouter(tags=["Login"])
 @router.post("/login",response_model=TokenResponse)
 def login(payload: LoginRequest =Depends(LoginRequest.as_form),db: Session = Depends(get_db)):
     
-    token = login_user(db, payload)
+    token = login_user(db=db,email=payload.email,password=payload.password)
     
     response = RedirectResponse(
-        url="/dashboad",
+        url="/users/home",
         status_code=303
     )
     
@@ -23,4 +23,4 @@ def login(payload: LoginRequest =Depends(LoginRequest.as_form),db: Session = Dep
         value=token["access_token"],
         path="/"
     )
-    return login_user(db=db,email=payload.email,password=payload.password)
+    return response

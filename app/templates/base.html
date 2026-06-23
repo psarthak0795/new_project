@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Employee Portal{% endblock %}</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        body{
+            background:#f4f7fc;
+        }
+
+        /* Layout */
+        .dashboard{
+            display:flex;
+            min-height:100vh;
+        }
+
+        /* Sidebar */
+        .sidebar{
+            width:260px;
+            background:linear-gradient(180deg,#1e293b,#0f172a);
+            color:#fff;
+            padding:25px;
+            position:fixed;
+            height:100%;
+            overflow-y:auto;
+            z-index:1000;
+        }
+
+        .logo{
+            text-align:center;
+            margin-bottom:40px;
+        }
+
+        .logo h2{
+            font-size:24px;
+        }
+
+        .menu{
+            list-style:none;
+        }
+
+        .menu li{
+            margin-bottom:10px;
+        }
+
+        .menu a{
+            text-decoration:none;
+            color:#cbd5e1;
+            display:block;
+            padding:14px 18px;
+            border-radius:12px;
+            transition:.3s;
+        }
+
+        .menu a:hover,
+        .menu .active a{
+            background:#4f46e5;
+            color:white;
+        }
+
+        .logout{
+            margin-top:250px;
+        }
+
+        /* Main */
+        .content{
+            flex:1;
+            margin-left:260px;
+            padding:30px;
+        }
+
+        
+
+        /* Responsive */
+        @media(max-width:768px){
+
+            .sidebar{
+                width:80px;
+            }
+
+            .logo h2{
+                display:none;
+            }
+
+            .menu a{
+                text-align:center;
+                font-size:12px;
+            }
+
+            .content{
+                margin-left:80px;
+            }
+        }
+        {% block extra_styles %}{% endblock %}
+        
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+
+            <div class="logo">
+                <h2>Employee Portal</h2>
+            </div>
+
+            <ul class="menu">
+                <li class="{% block home_active %}{% endblock %}">
+                    <a href="/users/home">Profile</a>
+                </li>
+
+                <li class="{% block projects_active %}{% endblock %}">
+                    <a href="/projects">Projects</a>
+                </li>
+
+                <li class="{% block team_active %}{% endblock %}">
+                    <a href="/team">Team View</a>
+                </li>
+
+                <li class="logout">
+                    <a href="#">Logout</a>
+                </li>
+            </ul>
+
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+
+    </div>
+
+</body>
+</html>

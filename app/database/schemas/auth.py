@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr
 from fastapi import Form
 
 class LoginRequest(BaseModel):
-    email: EmailStr
+    email: str
     password: str
     
     @classmethod

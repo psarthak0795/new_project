@@ -8,12 +8,12 @@ from app.services.authh import register_user_service
 router = APIRouter(prefix="/authh",tags=["Authentication"])
 
 
-@router.post("/register", response_model=UserResponse)
+@router.post("/register")
 def register_user(payload: UserCreate = Depends(UserCreate.as_form),db: Session = Depends(get_db)):
     register_user_service(db, payload)
     
     response = RedirectResponse(
-        url="/homepage",
+        url="/login",
         status_code=303
     )
     

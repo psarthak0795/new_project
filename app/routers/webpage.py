@@ -24,11 +24,3 @@ def login_page(request: Request):
         context={"request": request}
     )
     
-#for home page 
-@router.get("/home",response_class=HTMLResponse)
-def home_page(request: Request):
-    return templates.TemplateResponse(
-        request=request,
-        name="homepage.html",
-        context={"request": request}
-    )

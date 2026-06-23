@@ -1,23 +1,28 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-
+from fastapi.responses import RedirectResponse
 from app.database.connection import get_db
 from app.dependencies.auth import get_current_user
 from app.database.models.user import User
 from app.database.schemas.project import ProjectCreate, ProjectUpdate, ProjectResponse
 from app.services.project import delete_project_for_current_user, create_project_for_current_user, update_project_for_current_user, manager_required
-from app.services.manager import get_projects
+
 
 
 router = APIRouter(tags=["Project"])
 
-@router.post("/projects", response_model=ProjectResponse)
+@router.post("/projects")
 def create_project(
-    project: ProjectCreate,
+    payload: ProjectCreate = Depends(ProjectCreate.as_form),
     db: Session = Depends(get_db),
     current_user=Depends(manager_required)
 ):
-    return create_project_for_current_user(db,project,current_user.id)
+    
+    create_project_for_current_user(db,payload,current_user.id)
+    return RedirectResponse(
+        url="/projects",
+        status_code=303
+    )
 
 # @router.get("/projects",response_model=list[ProjectResponse])
 # def get_projects(

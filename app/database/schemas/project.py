@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import date
+from fastapi import Form
 
 
 class ProjectBase(BaseModel):
@@ -22,6 +23,25 @@ class ProjectCreate(ProjectBase):
     end_date: Optional[date] = None
     description: Optional[str] = None
     employee_id: Optional[int] = None
+    
+    @classmethod
+    def as_form(
+        cls,
+         project_name:str = Form(...),
+         start_date:str = Form(...),
+         end_date:str = Form(...),
+         description:str = Form(...),
+         employee_id:str = Form(...)
+        
+    ):
+        return cls(
+            project_name=project_name,
+            start_date=start_date,
+            end_date=end_date,
+            description=description,
+            employee_id=employee_id
+            
+        )
 
 
 class ProjectUpdate(BaseModel):
@@ -29,6 +49,24 @@ class ProjectUpdate(BaseModel):
     start_date: Optional[date] = None
     end_date: Optional[date] = None
     description: Optional[str] = None
+    
+    
+    @classmethod
+    def as_form(
+        cls,
+         project_name:str = Form(...),
+         start_date:str = Form(...),
+         end_date:str = Form(...),
+         description:str = Form(...),
+        
+    ):
+        return cls(
+            project_name=project_name,
+            start_date=start_date,
+            end_date=end_date,
+            description=description,
+            
+        )
 
 
 class ProjectResponse(ProjectBase):

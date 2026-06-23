@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Team View{% endblock %}
+
+{% block team_active %}active{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .page-title{
+        font-size:30px;
+        color:#1e293b;
+        margin-bottom:25px;
+    }
+
+    /* Team Grid */
+    .team-grid{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:20px;
+        margin-top:20px;
+    }
+
+    .team-card{
+        background:white;
+        padding:25px;
+        border-radius:20px;
+        text-align:center;
+        box-shadow:0 5px 20px rgba(0,0,0,.08);
+    }
+
+    .team-card img{
+        width:100px;
+        height:100px;
+        border-radius:50%;
+        margin-bottom:15px;
+        border:4px solid #4f46e5;
+    }
+
+    .team-card h3{
+        color:#111827;
+        margin-bottom:5px;
+    }
+
+    .team-card p{
+        color:#64748b;
+        margin-bottom:10px;
+    }
+
+    .team-card .role{
+        background:#eef2ff;
+        color:#4f46e5;
+        padding:6px 12px;
+        border-radius:20px;
+        font-size:13px;
+        display:inline-block;
+    }
+
+    @media(max-width:992px){
+        .team-grid{
+            grid-template-columns:repeat(2,1fr);
+        }
+    }
+
+    @media(max-width:768px){
+        .team-grid{
+            grid-template-columns:1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="page-title">Team View</h1>
+
+    <div class="team-grid">
+
+        <div class="team-card">
+            <img src="https://i.pravatar.cc/150?img=1" alt="Sarah Johnson">
+            <h3>Sarah Johnson</h3>
+            <p>Team Lead</p>
+            <span class="role">Project Manager</span>
+        </div>
+
+        <div class="team-card">
+            <img src="https://i.pravatar.cc/150?img=2" alt="David Lee">
+            <h3>David Lee</h3>
+            <p>Senior Developer</p>
+            <span class="role">Frontend Developer</span>
+        </div>
+
+        <div class="team-card">
+            <img src="https://i.pravatar.cc/150?img=3" alt="Emma Wilson">
+            <h3>Emma Wilson</h3>
+            <p>Senior Developer</p>
+            <span class="role">Backend Developer</span>
+        </div>
+
+        <div class="team-card">
+            <img src="https://i.pravatar.cc/150?img=4" alt="John Smith">
+            <h3>John Smith</h3>
+            <p>Junior Developer</p>
+            <span class="role">Frontend Developer</span>
+        </div>
+
+        <div class="team-card">
+            <img src="https://i.pravatar.cc/150?img=5" alt="Lisa Anderson">
+            <h3>Lisa Anderson</h3>
+            <p>QA Engineer</p>
+            <span class="role">Quality Assurance</span>
+        </div>
+
+        <div class="team-card">
+            <img src="https://i.pravatar.cc/150?img=6" alt="Michael Brown">
+            <h3>Michael Brown</h3>
+            <p>DevOps Engineer</p>
+            <span class="role">Infrastructure</span>
+        </div>
+
+    </div>
+
+{% endblock %}

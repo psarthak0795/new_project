@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %}Projects Management{% endblock %}
+
+{% block projects_active %}active{% endblock %}
+
+{% block extra_styles %}
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f4f7fc;
+    padding:30px;
+}
+
+/* Page Header */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.header h1{
+    color:#1e293b;
+    font-size:32px;
+}
+
+.add-btn{
+    background:#4f46e5;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+}
+
+.add-btn:hover{
+    background:#4338ca;
+}
+
+/* Card */
+.table-card{
+    background:#fff;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.table-card h2{
+    color:#1e293b;
+    margin-bottom:20px;
+}
+
+/* Table */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#eef2ff;
+}
+
+th{
+    color:#1e293b;
+    font-size:15px;
+    font-weight:600;
+}
+
+th,
+td{
+    padding:15px;
+    text-align:left;
+    border-bottom:1px solid #e5e7eb;
+}
+
+tbody tr:hover{
+    background:#f8fafc;
+}
+
+/* Status */
+.status{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    color:white;
+    font-weight:600;
+}
+
+.completed{
+    background:#10b981;
+}
+
+.progress{
+    background:#f59e0b;
+}
+
+.pending{
+    background:#ef4444;
+}
+
+/* Buttons */
+.action-buttons{
+    display:flex;
+    gap:8px;
+}
+
+.edit-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:8px 14px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.delete-btn{
+    background:#dc2626;
+    color:white;
+    border:none;
+    padding:8px 14px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.edit-btn:hover{
+    background:#1d4ed8;
+}
+
+.delete-btn:hover{
+    background:#b91c1c;
+}
+
+/* Responsive */
+@media(max-width:992px){
+
+    body{
+        padding:15px;
+    }
+
+    .table-card{
+        overflow-x:auto;
+    }
+
+    table{
+        min-width:1000px;
+    }
+}
+
+@media(max-width:768px){
+
+    .header{
+        flex-direction:column;
+        gap:15px;
+        align-items:flex-start;
+    }
+
+    .header h1{
+        font-size:26px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1>Projects Management</h1>
+    <a class="add-btn" href="/projects/create">+ Add New Project</a>
+</div>
+
+<div class="table-card">
+
+    <h2>Project List</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Sr No</th>
+                <th>Project Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Description</th>
+                <th>{% if user.role.value == "manager" %}
+                    Employee Name
+                    {% else %}
+                    Mannager Name
+                    {% endif %}
+                </th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for project in projects %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ project.project_name }}</td>
+                <td>{{ project.start_date}}</td>
+                <td>{{ project.end_date}}</td>
+                <td>{{ project.description}}</td>
+                <td>
+                    {% if user.role.value == "manager"%}
+                        {{ project.employee_name }}
+                    {% else %}
+                        {{ project.manage_name }}
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="status progress">
+                        In Progress
+                    </span>
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="edit-btn">Edit</button>
+                        <button class="delete-btn">Delete</button>
+                    </div>
+                </td>
+            </tr>
+
+           
+
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}
