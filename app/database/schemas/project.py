@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel , ConfigDict
 from typing import Optional
 from datetime import date
 from fastapi import Form
@@ -81,11 +81,21 @@ class ProjectResponse(ProjectBase):
     manager_name:str
     employee_name:str
     
-    
-    
-
-    
-    
-
     class Config:
         from_attributes = True
+        
+class TeamViewResponse(BaseModel):
+    project_id: int
+    project_name: str
+    
+    manager_id: int
+    manager_first_name: str
+    manager_last_name: str
+    manager_designation: str
+    
+    employee_id: int
+    employee_first_name: str
+    employee_last_name: str
+    employee_designation: str
+    
+    model_config = ConfigDict(from_attributes=True)

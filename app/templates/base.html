@@ -33,6 +33,7 @@
             height:100%;
             overflow-y:auto;
             z-index:1000;
+            min-width:260px;
         }
 
         .logo{
@@ -46,6 +47,9 @@
 
         .menu{
             list-style:none;
+            display:flex;
+            flex-direction:column;
+            height:100%;
         }
 
         .menu li{
@@ -68,7 +72,7 @@
         }
 
         .logout{
-            margin-top:250px;
+            margin-top:auto;
         }
 
         /* Main */
@@ -84,20 +88,21 @@
         @media(max-width:768px){
 
             .sidebar{
-                width:80px;
+                width:260px;
             }
 
             .logo h2{
-                display:none;
+                font-size:20px;
             }
 
             .menu a{
-                text-align:center;
-                font-size:12px;
+                padding:12px 14px;
+                font-size:14px;
             }
 
             .content{
-                margin-left:80px;
+                margin-left:260px;
+                padding:20px;
             }
         }
         {% block extra_styles %}{% endblock %}
@@ -119,17 +124,21 @@
                 <li class="{% block home_active %}{% endblock %}">
                     <a href="/users/home">Profile</a>
                 </li>
+                <li class="{% block allusers_active %}{% endblock %}">
+                    <a href="/users">All Users</a>
+                </li>
 
                 <li class="{% block projects_active %}{% endblock %}">
                     <a href="/projects">Projects</a>
                 </li>
+                {% block project_submenu %}{% endblock %}
 
                 <li class="{% block team_active %}{% endblock %}">
                     <a href="/team">Team View</a>
                 </li>
 
                 <li class="logout">
-                    <a href="#">Logout</a>
+                    <a href="/logout">Logout</a>
                 </li>
             </ul>
 
@@ -142,5 +151,35 @@
 
     </div>
 
+    <script>
+        async function authFetch(url, options = {}) {
+            const opts = {
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(options.headers || {})
+                },
+                ...options
+            };
+
+            let response = await fetch(url, opts);
+            if (response.status === 401) {
+                const refreshResponse = await fetch('/refresh', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                if (refreshResponse.ok) {
+                    response = await fetch(url, opts);
+                } else {
+                    window.location.href = '/login';
+                    return response;
+                }
+            }
+            return response;
+        }
+
+        window.authFetch = authFetch;
+    </script>
 </body>
 </html>

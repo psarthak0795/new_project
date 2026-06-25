@@ -42,17 +42,22 @@ class UserService:
         return user
     
     def update_user(db: Session, user_id: int, user_data: dict, current_user: User):
-        if current_user.role != UserRole.manager:
+        if current_user.role != UserRole.manager and current_user.id != user_id:
             raise HTTPException(
                 status_code=403,
-                detail="Only managers can update user details"
+                detail="Only managers or the profile owner can update user details"
             )
 
         user = get_user_by_id(db, user_id)
         if not user:
             raise HTTPException(status_code=404,detail="User not found")
 
-        for key, value in user_data.model_dump(exclude_unset=True).items():
+        if hasattr(user_data, 'model_dump'):
+            update_items = user_data.model_dump(exclude_unset=True)
+        else:
+            update_items = user_data
+
+        for key, value in update_items.items():
             setattr(user, key, value)
 
         db.commit()

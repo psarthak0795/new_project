@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Project{% endblock %}
+
+{% block projects_active %}active{% endblock %}
+
+{% block extra_styles %}
+<style>
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:40px;
+}
+
+.page-header{
+    position:relative;
+    margin-bottom:40px;
+}
+
+.header{
+    padding-top:40px;
+}
+
+.header h1{
+    color:#1e293b;
+    font-size:32px;
+}
+
+.back-btn{
+    position:absolute;
+    top:0;
+    left:0;
+    text-decoration:none;
+    background:#64748b;
+    color:white;
+    padding:10px 16px;
+    border-radius:10px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.back-btn:hover{
+    background:#475569;
+}
+
+.form-card{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.form-card h2{
+    color:#1e293b;
+    margin-bottom:25px;
+    text-align:center;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group label{
+    margin-bottom:8px;
+    font-weight:600;
+    color:#334155;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:14px;
+    outline:none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+    border-color:#4f46e5;
+}
+
+.full-width{
+    grid-column:span 2;
+}
+
+textarea{
+    resize:none;
+    min-height:120px;
+}
+
+.update-btn{
+    width:100%;
+    margin-top:25px;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#4f46e5;
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.update-btn:hover{
+    background:#4338ca;
+}
+
+@media(max-width:768px){
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full-width{
+        grid-column:span 1;
+    }
+
+    .header{
+        flex-direction:column;
+        gap:15px;
+        align-items:flex-start;
+    }
+
+    .header h1{
+        font-size:26px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <a href="/projects" class="back-btn">← Back</a>
+    <div class="header">
+        <h1>Edit Project</h1>
+    </div>
+</div>
+
+<div class="form-card">
+
+    <h2>Update Project Details</h2>
+
+    <form action="/projects/update/{{ project.id }}" method="POST">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Project Name</label>
+                <input
+                    type="text"
+                    name="project_name"
+                    value="{{ project.project_name }}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>Start Date</label>
+                <input
+                    type="date"
+                    name="start_date"
+                    value="{{ project.start_date }}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>End Date</label>
+                <input
+                    type="date"
+                    name="end_date"
+                    value="{{ project.end_date }}"
+                    required>
+            </div>
+
+            <div class="form-group full-width">
+                <label>Description</label>
+                <textarea
+                    name="description"
+                    required>{{ project.description }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status">
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Pending">Pending</option>
+                </select>
+            </div>
+
+        </div>
+
+        <button type="submit" class="update-btn">
+            Update Project
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

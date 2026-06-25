@@ -24,3 +24,18 @@ def login_page(request: Request):
         context={"request": request}
     )
     
+@router.get("/logout")
+def logout(request: Request):
+    response = HTMLResponse(status_code=302)
+    response.headers["Location"] = "/login"
+    response.delete_cookie("access_token", path="/")
+    response.delete_cookie("refresh_token", path="/")
+    return response
+
+@router.get("/team", response_class=HTMLResponse)
+def team_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="teampage.html",
+        context={"request": request}
+    )

@@ -5,175 +5,170 @@
 {% block projects_active %}active{% endblock %}
 
 {% block extra_styles %}
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
+        <style>
+        /* Page Header */
+        .header{
+            display:flex;
+            align-items:flex-start;
+            margin-bottom:25px;
+            width:100%;
+            position:relative;
+            min-height:60px;
+        }
 
-body{
-    background:#f4f7fc;
-    padding:30px;
-}
+        .header h1{
+            color:#1e293b;
+            font-size:32px;
+            margin:0;
+        }
 
-/* Page Header */
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:25px;
-}
+        .add-btn{
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            position:absolute;
+            right:0;
+            top:20px;
+        }
 
-.header h1{
-    color:#1e293b;
-    font-size:32px;
-}
+        .add-btn:hover{
+            background:#4338ca;
+        }
 
-.add-btn{
-    background:#4f46e5;
-    color:white;
-    border:none;
-    padding:12px 20px;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:15px;
-    font-weight:600;
-}
+        /* Card */
+        .table-card{
+            background:#fff;
+            border-radius:20px;
+            padding:25px;
+            box-shadow:0 5px 20px rgba(0,0,0,.08);
+        }
 
-.add-btn:hover{
-    background:#4338ca;
-}
+        .table-card h2{
+            color:#1e293b;
+            margin-bottom:20px;
+        }
 
-/* Card */
-.table-card{
-    background:#fff;
-    border-radius:20px;
-    padding:25px;
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
-}
+        /* Table */
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
 
-.table-card h2{
-    color:#1e293b;
-    margin-bottom:20px;
-}
+        thead{
+            background:#eef2ff;
+        }
 
-/* Table */
-table{
-    width:100%;
-    border-collapse:collapse;
-}
+        th{
+            color:#1e293b;
+            font-size:15px;
+            font-weight:600;
+        }
 
-thead{
-    background:#eef2ff;
-}
+        th,
+        td{
+            padding:15px;
+            text-align:left;
+            border-bottom:1px solid #e5e7eb;
+        }
 
-th{
-    color:#1e293b;
-    font-size:15px;
-    font-weight:600;
-}
+        tbody tr:hover{
+            background:#f8fafc;
+        }
 
-th,
-td{
-    padding:15px;
-    text-align:left;
-    border-bottom:1px solid #e5e7eb;
-}
+        /* Status */
+        .status{
+            padding:6px 12px;
+            border-radius:20px;
+            font-size:13px;
+            color:white;
+            font-weight:600;
+        }
 
-tbody tr:hover{
-    background:#f8fafc;
-}
+        .completed{
+            background:#10b981;
+        }
 
-/* Status */
-.status{
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:13px;
-    color:white;
-    font-weight:600;
-}
+        .progress{
+            background:#f59e0b;
+        }
 
-.completed{
-    background:#10b981;
-}
+        .pending{
+            background:#ef4444;
+        }
 
-.progress{
-    background:#f59e0b;
-}
+        /* Buttons */
+        .action-buttons{
+            display:flex;
+            gap:8px;
+        }
 
-.pending{
-    background:#ef4444;
-}
+        .edit-btn{
+            background:#2563eb;
+            color:white;
+            border:none;
+            padding:8px 14px;
+            border-radius:8px;
+            cursor:pointer;
+        }
 
-/* Buttons */
-.action-buttons{
-    display:flex;
-    gap:8px;
-}
+        .delete-btn{
+            background:#dc2626;
+            color:white;
+            border:none;
+            padding:8px 14px;
+            border-radius:8px;
+            cursor:pointer;
+        }
 
-.edit-btn{
-    background:#2563eb;
-    color:white;
-    border:none;
-    padding:8px 14px;
-    border-radius:8px;
-    cursor:pointer;
-}
+        .edit-btn:hover{
+            background:#1d4ed8;
+        }
 
-.delete-btn{
-    background:#dc2626;
-    color:white;
-    border:none;
-    padding:8px 14px;
-    border-radius:8px;
-    cursor:pointer;
-}
+        .delete-btn:hover{
+            background:#b91c1c;
+        }
 
-.edit-btn:hover{
-    background:#1d4ed8;
-}
+        /* Responsive */
+        @media(max-width:992px){
 
-.delete-btn:hover{
-    background:#b91c1c;
-}
+            body{
+                padding:15px;
+            }
 
-/* Responsive */
-@media(max-width:992px){
+            .table-card{
+                overflow-x:auto;
+            }
 
-    body{
-        padding:15px;
-    }
+            table{
+                min-width:1000px;
+            }
+        }
 
-    .table-card{
-        overflow-x:auto;
-    }
+        @media(max-width:768px){
 
-    table{
-        min-width:1000px;
-    }
-}
+            .header{
+                flex-direction:column;
+                gap:15px;
+                align-items:flex-start;
+            }
 
-@media(max-width:768px){
-
-    .header{
-        flex-direction:column;
-        gap:15px;
-        align-items:flex-start;
-    }
-
-    .header h1{
-        font-size:26px;
-    }
-}
+            .header h1{
+                font-size:26px;
+            }
+        }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="header">
     <h1>Projects Management</h1>
-    <a class="add-btn" href="/projects/create">+ Add New Project</a>
+    <a class="add-btn" href="/projects/create">Add New Project</a>
 </div>
 
 <div class="table-card">
@@ -222,8 +217,12 @@ tbody tr:hover{
                 </td>
                 <td>
                     <div class="action-buttons">
-                        <button class="edit-btn">Edit</button>
-                        <button class="delete-btn">Delete</button>
+                        <button class="edit-btn" onclick="window.location.href='/projects/edit/{{ project.id }}'">Edit</button>
+                        {% if user.role.value == "manager" %}
+                        <form action="/projects/delete/{{ project.id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="delete-btn" onclick="return confirm('Delete this project?');">Delete</button>
+                        </form>
+                        {% endif %}
                     </div>
                 </td>
             </tr>

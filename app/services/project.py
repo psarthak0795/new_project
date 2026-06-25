@@ -42,8 +42,13 @@ def get_projects_by_creator_id(db: Session,creator_id: int):
 
 
 def update_project(db: Session, project: Project, data: dict):
+    # Ensure we never overwrite required project relations with null values.
+    if "employee_id" in data and data["employee_id"] is None:
+        data.pop("employee_id")
+
     for key, value in data.items():
-        setattr(project, key, value)
+        if value is not None:
+            setattr(project, key, value)
 
     db.commit()
     db.refresh(project)
@@ -77,7 +82,11 @@ def update_project_for_current_user(
         raise HTTPException(status_code=404, detail="Project not found")
     
     
-    return update_project(db=db, project=project, data=project_data.model_dump(exclude_unset=True))
+    return update_project(
+        db=db,
+        project=project,
+        data=project_data.model_dump(exclude_unset=True, exclude_none=True)
+    )
 
 def delete_project_for_current_user(
     db: Session,
@@ -93,3 +102,36 @@ def delete_project_for_current_user(
    
 
     return delete_project(db=db, project=project)
+
+def get_team_view_service(db: Session, user_id: int):
+    
+    Manager = aliased(User)
+    Employee = aliased(User)
+    
+    teams = (
+        db.query(
+            project.id.label("project_id"),
+             project.name.label("project_name"),
+             
+                Manager.id.label("manager_id"),
+                Manager.first_name.label("manager_first_name"),
+                Manager.last_name.label("manager_last_name"),
+                Manager.designation.label("manager_designation"),
+                
+                Employee.id.label("emp_id"),
+                Employee.first_name.label("emp_first_name"),
+                Employee.last_name.label("emp_last_name"),
+                Employee.designation.label("emp_designation")        
+        )
+        .join(Manager, Project.created_by_id == Manager.id)
+        .join(Employee, Project.employee_id == Employee.id)
+        .filter(
+            or_(
+                Project.created_by_id == user_id,
+                Project.employee_id == user_id
+            )
+        )
+        .all()
+    )
+    
+    return teams

@@ -21,6 +21,17 @@ def login(payload: LoginRequest =Depends(LoginRequest.as_form),db: Session = Dep
     response.set_cookie(
         key="access_token",
         value=token["access_token"],
-        path="/"
+        path="/",
+        httponly=True,
+        max_age=3600,
+        samesite="lax"
+    )
+    response.set_cookie(
+        key="refresh_token",
+        value=token["refresh_token"],
+        path="/",
+        httponly=True,
+        max_age=604800,
+        samesite="lax"
     )
     return response
