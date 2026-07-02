@@ -110,10 +110,6 @@
 
     <h2>All Users</h2>
 
-    <script>
-        let userRole = "manager"; // employee OR manager
-    </script>
-
     <table>
         <thead>
             <tr>
@@ -126,39 +122,53 @@
         </thead>
 
         <tbody>
+            {% for user in users %}
             <tr>
-                <td>1</td>
-                <td>{{ project.project_name }}</td>
-                <td>amit@gmail.com</td>
-                <td><span class="role manager">Manager</span></td>
+                <td>{{ user.id }}</td>
+                <td>{{ user.first_name }} {% if user.middle_name %}{{ user.middle_name }} {% endif %}{{ user.last_name }}</td>
+                <td>{{ user.email }}</td>
+                <td><span class="role {{ user.role.value }}">{{ user.role.value|title }}</span></td>
                 <td>
                     <button class="btn view">View</button>
-                    <button class="btn edit manager-btn">Edit</button>
-                    <button class="btn delete manager-btn">Delete</button>
+                    {% if is_manager %}
+                    <a href="/users/edit/{{ user.id }}" class="btn edit manager-btn">Edit</a>
+                    <button type="button" class="btn delete manager-btn" onclick="deleteUser({{ user.id }})">Delete</button>
+                    {% endif %}
                 </td>
             </tr>
-
+            {% else %}
             <tr>
-                <td>2</td>
-                <td>Rahul Sharma</td>
-                <td>rahul@gmail.com</td>
-                <td><span class="role employee">Employee</span></td>
-                <td>
-                    <button class="btn view">View</button>
-                    <button class="btn edit manager-btn">Edit</button>
-                    <button class="btn delete manager-btn">Delete</button>
-                </td>
+                <td colspan="5">No users found.</td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 
 </div>
 
 <script>
+    const userRole = "{{ 'manager' if is_manager else 'employee' }}";
     if (userRole === "employee") {
         document.querySelectorAll(".manager-btn").forEach(btn => {
             btn.style.display = "none";
         });
+    }
+
+    async function deleteUser(userId) {
+        if (!confirm("Are you sure you want to delete this user?")) {
+            return;
+        }
+
+        const response = await fetch(`/users/${userId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            alert('Failed to delete user.');
+        }
     }
 </script>
 

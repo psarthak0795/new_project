@@ -110,6 +110,24 @@ def update_profile(
     return RedirectResponse(url="/users/home", status_code=303)
 
 
+@router.get("/all", response_class=HTMLResponse)
+def show_all_users_page(
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    users = db.query(User).all()
+    return templates.TemplateResponse(
+        request=request,
+        name="alluser.html",
+        context={
+            "request": request,
+            "users": users,
+            "is_manager": current_user.role == UserRole.manager,
+        },
+    )
+
+
 @router.get("/", response_model=list[UserResponse])
 def get_all_users(db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
     return UserService.get_all_users(db=db,current_user=current_user)

@@ -1,6 +1,7 @@
 from sqlalchemy import or_
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session,aliased
 from fastapi import HTTPException , Depends
+from app.database.schemas import project
 from app.dependencies.auth import get_current_user
 
 from app.database.models.project import Project
@@ -110,8 +111,8 @@ def get_team_view_service(db: Session, user_id: int):
     
     teams = (
         db.query(
-            project.id.label("project_id"),
-             project.name.label("project_name"),
+            Project.id.label("project_id"),
+            Project.name.label("project_name"),
              
                 Manager.id.label("manager_id"),
                 Manager.first_name.label("manager_first_name"),
@@ -123,11 +124,11 @@ def get_team_view_service(db: Session, user_id: int):
                 Employee.last_name.label("emp_last_name"),
                 Employee.designation.label("emp_designation")        
         )
-        .join(Manager, Project.created_by_id == Manager.id)
+        .join(Manager, Project.created_by == Manager.id)
         .join(Employee, Project.employee_id == Employee.id)
         .filter(
             or_(
-                Project.created_by_id == user_id,
+                Project.created_by == user_id,
                 Project.employee_id == user_id
             )
         )
