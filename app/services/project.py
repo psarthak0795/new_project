@@ -112,17 +112,17 @@ def get_team_view_service(db: Session, user_id: int):
     teams = (
         db.query(
             Project.id.label("project_id"),
-            Project.name.label("project_name"),
+            Project.project_name.label("project_name"),
              
                 Manager.id.label("manager_id"),
                 Manager.first_name.label("manager_first_name"),
                 Manager.last_name.label("manager_last_name"),
                 Manager.designation.label("manager_designation"),
                 
-                Employee.id.label("emp_id"),
-                Employee.first_name.label("emp_first_name"),
-                Employee.last_name.label("emp_last_name"),
-                Employee.designation.label("emp_designation")        
+                Employee.id.label("employee_id"),
+                Employee.first_name.label("employee_first_name"),
+                Employee.last_name.label("employee_last_name"),
+                Employee.designation.label("employee_designation")        
         )
         .join(Manager, Project.created_by == Manager.id)
         .join(Employee, Project.employee_id == Employee.id)

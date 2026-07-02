@@ -112,7 +112,7 @@ def team_view(
     
     response = templates.TemplateResponse(
         request=request,
-        name= "teamview.html",
+        name= "teampage.html",
         context={
             "request" : request,
             "teams": teams,
